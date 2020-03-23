@@ -1,13 +1,16 @@
 <template>
     <div class="home">
         <div class="menu" @click="showApps">Apps</div>
-        <div class="menu">Projects</div>
+        <div class="menu" @click="showProjects">Projects</div>
         <div class="menu">Background</div>
-        <div>
-            <face-recognition class="app"/>
-            <light-candle class="app"/>
-            <voldmort class="app"/>
-            <way-knower class="app"/>
+        <div class="apps">
+            <face-recognition class="app up"/>
+            <light-candle class="app up"/>
+            <voldmort class="app up"/>
+            <way-knower class="app up"/>
+        </div>
+        <div class="cv hide">
+            <img src="@/assets/CV.png"/>
         </div>
     </div>
 </template>
@@ -23,17 +26,52 @@
         components: {FaceRecognition, LightCandle, Voldmort, WayKnower}
     })
     export default class Home extends Vue {
+        stopEvent = false
+        currentMenu = ''
+
         showApps() {
+            this.stopEvent = true
+            this.hideAll()
+            if (this.currentMenu === 'apps') return this.currentMenu = ''
+
+            this.currentMenu = 'apps'
             const apps = this.$el.querySelectorAll('.app')
             let index = 0
 
             const dropEffect = () => setTimeout(() => {
+                if (this.stopEvent) return
+                apps[index].classList.remove('up')
                 apps[index++].classList.add('drop')
                 if (index === app.length) return
                 dropEffect()
             }, 500)
-
+            this.stopEvent = false
             dropEffect()
+        }
+
+        showProjects() {
+            this.stopEvent = true
+            this.hideAll()
+            if (this.currentMenu === 'projects') return this.currentMenu = ''
+
+            this.currentMenu = 'projects'
+            this.stopEvent = false
+            if(this.stopEvent) return
+            const cv = this.$el.querySelector('.cv')
+            cv.classList.remove('hide')
+            cv.classList.add('show')
+        }
+
+        hideAll() {
+            const apps = this.$el.querySelectorAll('.app')
+            apps.forEach(app => {
+                app.classList.remove('drop')
+                app.classList.add('up')
+            })
+
+            const cv = this.$el.querySelector('.cv')
+            cv.classList.remove('show')
+            cv.classList.add('hide')
         }
 
         mounted() {
@@ -90,37 +128,84 @@
     .app {
         $hidden-area: -800px;
         position: absolute;
-        transition: top 0.3s ease;
         top: $hidden-area;
 
-        &:nth-child(1) {
-            &.drop {
-                top: $container-padding-vertical + 10px;
+        @keyframes drop {
+            from {
+                top: $hidden-area
             }
+            to {
+                top: $container-padding-vertical + 10px
+            }
+        }
+        @keyframes up {
+            from {
+                top: $container-padding-vertical + 10px
+            }
+            to {
+                top: $hidden-area
+            }
+        }
+
+        &.drop {
+            animation-delay: 1s;
+            animation: drop 1s ease;
+            animation-fill-mode: forwards;
+        }
+
+        &.up {
+            animation: up 1s ease;
+            animation-fill-mode: forwards;
         }
 
         &:nth-child(2) {
             left: 400px;
-
-            &.drop {
-                top: $container-padding-vertical + 10px;
-            }
         }
 
         &:nth-child(3) {
             left: 750px;
-
-            &.drop {
-                top: $container-padding-vertical + 10px;
-            }
         }
 
         &:nth-child(4) {
             left: 1100px;
+        }
+    }
 
-            &.drop {
-                top: $container-padding-vertical + 10px;
+    .cv {
+        width: 90%;
+        height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        & > img {
+            width: 100%;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
             }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        &.hide {
+            animation: fadeOut 1s ease;
+            animation-fill-mode: forwards;
+        }
+        &.show {
+            animation-delay: 1s;
+            animation: fadeIn 1s ease;
+            animation-fill-mode: forwards;
         }
     }
 </style>
