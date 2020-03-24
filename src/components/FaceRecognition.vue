@@ -27,8 +27,6 @@
 
     img {
         width: 300px;
-    }
-    p {
-        margin-top: 0;
+        height: 550px;
     }
 </style>

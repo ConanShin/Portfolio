@@ -3,31 +3,52 @@
         <div class="menu" @click="showApps">Apps</div>
         <div class="menu" @click="showProjects">Projects</div>
         <div class="menu">Background</div>
-        <div class="apps">
-            <face-recognition class="app up"/>
-            <light-candle class="app up"/>
-            <voldmort class="app up"/>
-            <way-knower class="app up"/>
-        </div>
-        <div class="cv hide">
-            <img src="@/assets/CV.png"/>
+        <div class="container">
+            <div class="apps">
+                <face-recognition class="app hide"/>
+                <light-candle class="app hide"/>
+                <voldmort class="app hide"/>
+                <way-knower class="app hide"/>
+                <apart class="app hide"/>
+                <customer-management class="app hide"/>
+            </div>
+            <div class="cv hide">
+                <img src="@/assets/CV.png"/>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import {Vue, Component} from 'vue-property-decorator'
+    import {Vue, Component, Watch} from 'vue-property-decorator'
     import FaceRecognition from '@/components/FaceRecognition'
     import LightCandle from '@/components/LightCandle'
     import Voldmort from '@/components/Voldmort'
     import WayKnower from '@/components/WayKnower'
+    import Apart from '@/components/Apart'
+    import CustomerManagement from '@/components/CustomerManagement'
 
     @Component({
-        components: {FaceRecognition, LightCandle, Voldmort, WayKnower}
+        components: {FaceRecognition, LightCandle, Voldmort, WayKnower, Apart, CustomerManagement}
     })
     export default class Home extends Vue {
         stopEvent = false
         currentMenu = ''
+
+        @Watch('currentMenu')
+        scrollToCorrectPosition (menu) {
+            console.log(menu)
+            switch (menu) {
+                case '':
+                case 'apps':
+                    this.$el.querySelector('.container').scrollTo(0, 0)
+                    this.$el.querySelector('.container').style['overflow-x'] = 'scroll'
+                    break;
+                case 'projects':
+                    this.$el.querySelector('.container').scrollTo(0, 800)
+                    this.$el.querySelector('.container').style['overflow-x'] = 'hidden'
+            }
+        }
 
         showApps() {
             this.stopEvent = true
@@ -38,15 +59,15 @@
             const apps = this.$el.querySelectorAll('.app')
             let index = 0
 
-            const dropEffect = () => setTimeout(() => {
+            const showEffect = () => setTimeout(() => {
                 if (this.stopEvent) return
-                apps[index].classList.remove('up')
-                apps[index++].classList.add('drop')
+                apps[index].classList.remove('hide')
+                apps[index++].classList.add('show')
                 if (index === app.length) return
-                dropEffect()
+                showEffect()
             }, 500)
             this.stopEvent = false
-            dropEffect()
+            showEffect()
         }
 
         showProjects() {
@@ -55,18 +76,18 @@
             if (this.currentMenu === 'projects') return this.currentMenu = ''
 
             this.currentMenu = 'projects'
-            this.stopEvent = false
-            if(this.stopEvent) return
             const cv = this.$el.querySelector('.cv')
-            cv.classList.remove('hide')
-            cv.classList.add('show')
+            setTimeout(() => {
+                cv.classList.remove('hide')
+                cv.classList.add('show')
+            }, 500)
         }
 
         hideAll() {
             const apps = this.$el.querySelectorAll('.app')
             apps.forEach(app => {
-                app.classList.remove('drop')
-                app.classList.add('up')
+                app.classList.remove('show')
+                app.classList.add('hide')
             })
 
             const cv = this.$el.querySelector('.cv')
@@ -77,13 +98,13 @@
         mounted() {
             const menus = this.$el.querySelectorAll('.menu')
             let index = menus.length
-            const dropEffect = () => setTimeout(() => {
-                menus[--index].classList.add('drop')
+            const showEffect = () => setTimeout(() => {
+                menus[--index].classList.add('show')
                 if (index === 0) return
-                dropEffect()
+                showEffect()
             }, 500)
 
-            dropEffect()
+            showEffect()
         }
     }
 </script>
@@ -91,6 +112,34 @@
 <style scoped lang="scss">
     $container-padding-vertical: 100px;
     $container-padding-horizontal: 50px;
+
+    @keyframes show {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @keyframes hide {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+
+    .show {
+        animation-delay: 1s;
+        animation: show 1s ease;
+        animation-fill-mode: forwards;
+    }
+
+    .hide {
+        animation: hide 1s ease;
+        animation-fill-mode: forwards;
+    }
 
     .home {
         height: calc(100vh - #{$container-padding-vertical * 2});
@@ -112,63 +161,37 @@
 
         transition: top 0.3s ease;
 
-        &.drop:nth-child(1) {
+        &.show:nth-child(1) {
             top: $container-padding-vertical + 10px;
         }
 
-        &.drop:nth-child(2) {
+        &.show:nth-child(2) {
             top: $container-padding-vertical + 65px;
         }
 
-        &.drop:nth-child(3) {
+        &.show:nth-child(3) {
             top: $container-padding-vertical + 120px;
         }
     }
 
+    .container {
+        height: 100%;
+        width: 85%;
+        overflow-y: hidden;
+        &::-webkit-scrollbar {
+            background: transparent;
+        }
+    }
+
+    .apps {
+        display: flex;
+    }
+
     .app {
         $hidden-area: -800px;
-        position: absolute;
-        top: $hidden-area;
-
-        @keyframes drop {
-            from {
-                top: $hidden-area
-            }
-            to {
-                top: $container-padding-vertical + 10px
-            }
-        }
-        @keyframes up {
-            from {
-                top: $container-padding-vertical + 10px
-            }
-            to {
-                top: $hidden-area
-            }
-        }
-
-        &.drop {
-            animation-delay: 1s;
-            animation: drop 1s ease;
-            animation-fill-mode: forwards;
-        }
-
-        &.up {
-            animation: up 1s ease;
-            animation-fill-mode: forwards;
-        }
-
-        &:nth-child(2) {
-            left: 400px;
-        }
-
-        &:nth-child(3) {
-            left: 750px;
-        }
-
-        &:nth-child(4) {
-            left: 1100px;
-        }
+        display: inline-block;
+        margin-right: 50px;
+        height: fit-content;
     }
 
     .cv {
@@ -180,32 +203,8 @@
             width: 100%;
         }
 
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        &.hide {
-            animation: fadeOut 1s ease;
-            animation-fill-mode: forwards;
-        }
-        &.show {
-            animation-delay: 1s;
-            animation: fadeIn 1s ease;
-            animation-fill-mode: forwards;
+        &::-webkit-scrollbar {
+            background: transparent;
         }
     }
 </style>

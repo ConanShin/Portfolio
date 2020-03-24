@@ -1,9 +1,8 @@
 <template>
-    <div class="way-knower box">
-        <div class="title">아저씨 이 길로 가 주세요</div>
-        <img src="@/assets/way-knower.png"/>
-        <p>고객이 원하는 길로 택시를 안내 </p>
-        <p>미취학아동과 노인을 대신 택시콜 </p>
+    <div class="customer-management box">
+        <div class="title">고객관리 시스템</div>
+        <img src="@/assets/customer-management.gif"/>
+        <p>부모님 사업을 위한 고객관리 시스템 </p>
     </div>
 </template>
 
@@ -11,14 +10,13 @@
     import { Vue, Component } from 'vue-property-decorator'
 
     @Component
-    export default class WayKnower extends Vue{
+    export default class CustomerManagement extends Vue{
     }
 </script>
 
 <style scoped lang="scss">
     .box {
         width: 300px;
-        height: auto;
         background: rgba(255, 255, 255, 0.5);
         white-space: nowrap;
         font-size: 15px;

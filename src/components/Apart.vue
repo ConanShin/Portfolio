@@ -1,9 +1,9 @@
 <template>
-    <div class="way-knower box">
-        <div class="title">아저씨 이 길로 가 주세요</div>
-        <img src="@/assets/way-knower.png"/>
-        <p>고객이 원하는 길로 택시를 안내 </p>
-        <p>미취학아동과 노인을 대신 택시콜 </p>
+    <div class="apart box">
+        <div class="title">아파트 커뮤니티</div>
+        <img src="@/assets/apartment.gif"/>
+        <p>아파트 입주민들의 커뮤니티 </p>
+        <p>공공API를 활용하여 매매거래 실시간확인 </p>
     </div>
 </template>
 
@@ -11,7 +11,7 @@
     import { Vue, Component } from 'vue-property-decorator'
 
     @Component
-    export default class WayKnower extends Vue{
+    export default class Apart extends Vue{
     }
 </script>
 
