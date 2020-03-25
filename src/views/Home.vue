@@ -98,13 +98,10 @@
         downloadImages() {
             const backgroundImage = new Image()
             backgroundImage.onload = () => {
-                console.log('loaded')
-                // this.$store.commit('downloadComplete', 'rainnyBoomerang')
+                this.$store.commit('downloadComplete', 'rainnyBoomerang')
                 this.$el.style.backgroundImage = "url(" + backgroundImage.src + ")"
             }
-            backgroundImage.src = '/img/rainny-boomerang.64fe890c.gif'
-
-            // this.$el.style.backgroundImage = "url('/img/rainny-boomerang.64fe890c.gif')"
+            backgroundImage.src = '/img/rainny-boomerang.gif'
         }
 
         mounted() {

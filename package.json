@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "deploy": "npm run build && scp -r ./dist bitnami@52.79.142.42:/home/bitnami/workspace/portfolio/"
   },
   "dependencies": {
     "core-js": "^3.6.4",

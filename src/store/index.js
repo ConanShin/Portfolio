@@ -18,7 +18,6 @@ export default new Vuex.Store({
     },
     mutations: {
         downloadComplete: (state, payload) => {
-            console.log('downloaded: ', payload)
             state.downloadedImages[payload] = true
         }
     },
@@ -26,7 +25,8 @@ export default new Vuex.Store({
 
     },
     getters: {
-        imageDownloadComplete: state => Object.values(state.downloadedImages).every(item => item)
+        // imageDownloadComplete: state => Object.values(state.downloadedImages).every(item => item)
+        imageDownloadComplete: state => state.downloadedImages.rainnyBoomerang
     },
     modules: {}
 })
