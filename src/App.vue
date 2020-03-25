@@ -1,9 +1,20 @@
 <template>
     <div id="app">
+        <loading-page/>
         <router-view/>
     </div>
 </template>
+<script>
+    import {Vue, Component} from 'vue-property-decorator'
+    import LoadingPage from '@/views/LoadingPage'
 
+    @Component({
+        components: {LoadingPage}
+    })
+    export default class App extends Vue {
+
+    }
+</script>
 <style lang="scss">
     html {
         overflow: hidden;

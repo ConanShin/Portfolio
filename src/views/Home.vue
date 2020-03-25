@@ -95,7 +95,21 @@
             cv.classList.add('hide')
         }
 
+        downloadImages() {
+            const backgroundImage = new Image()
+            backgroundImage.onload = () => {
+                console.log('loaded')
+                // this.$store.commit('downloadComplete', 'rainnyBoomerang')
+                this.$el.style.backgroundImage = "url(" + backgroundImage.src + ")"
+            }
+            backgroundImage.src = '/img/rainny-boomerang.64fe890c.gif'
+
+            // this.$el.style.backgroundImage = "url('/img/rainny-boomerang.64fe890c.gif')"
+        }
+
         mounted() {
+            this.downloadImages()
+
             const menus = this.$el.querySelectorAll('.menu')
             let index = menus.length
             const showEffect = () => setTimeout(() => {
@@ -144,7 +158,6 @@
     .home {
         height: calc(100vh - #{$container-padding-vertical * 2});
         background-size: cover;
-        background-image: url("../assets/rainny-boomerang.gif");
         padding: $container-padding-vertical $container-padding-horizontal;
     }
 

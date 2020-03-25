@@ -11,7 +11,7 @@
     import { Vue, Component } from 'vue-property-decorator'
 
     @Component
-    export default class Apart extends Vue{
+    export default class Apart extends Vue {
     }
 </script>
 
